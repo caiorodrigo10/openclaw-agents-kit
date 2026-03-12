@@ -1,8 +1,24 @@
-# ONBOARDING.md — Setup Inicial
+# ONBOARDING.md — Referencia Documental
 
-_Este arquivo guia o Forge no setup inicial do seu ambiente de agentes. Apos conclusao, este arquivo deve ser deletado._
+_Este arquivo e uma referencia para humanos. O fluxo real de onboarding e executado via `ONBOARDING.yaml` em cada workspace de agente._
 
-> **Instrucoes para o Forge:** Leia cada passo sequencialmente. Para cada passo, envie as perguntas ao cliente via Slack/chat, aguarde as respostas, execute as acoes descritas e so entao avance para o proximo passo. Nunca pule passos. Se o cliente nao souber responder algo, registre como "pendente" e siga em frente — retorne aos itens pendentes antes do Passo 7 (Validacao).
+## Como funciona o onboarding
+
+1. Cada agente tem um `ONBOARDING.yaml` no seu workspace
+2. No boot, o agente checa se esse arquivo existe
+3. **Forge:** entra em modo onboarding e entrevista o usuario
+4. **Sentinel/Flare:** informam que o setup nao foi feito e pedem para falar com o Forge
+5. O Forge faz o onboarding dele primeiro, depois configura Sentinel e Flare
+6. Ao final, deleta os 3 `ONBOARDING.yaml`
+
+## Arquivo de controle: `ONBOARDING.yaml`
+
+Cada step tem: pergunta, placeholder alvo, arquivos a atualizar, e flag `done`.
+O Forge atualiza o YAML conforme recebe respostas — se a sessao cair, retoma de onde parou.
+
+---
+
+> **Abaixo esta a referencia completa de cada passo.** O Forge usa o `ONBOARDING.yaml` como guia, nao este arquivo.
 
 ---
 

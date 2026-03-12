@@ -1,0 +1,318 @@
+onboarding:
+  status: pending
+  started_at: null
+  completed_at: null
+
+steps:
+  # --- Dados da empresa ---
+  - id: empresa_nome
+    question: "Qual o nome da sua empresa?"
+    target: "{{COMPANY_NAME}}"
+    answer: null
+    files_to_update:
+      - IDENTITY.md
+      - USER.md
+      - CONTEXT.md
+      - COLLABORATION.md
+      - ../sentinel/IDENTITY.md
+      - ../sentinel/USER.md
+      - ../sentinel/TOOLS.md
+      - ../sentinel/context/arquitetura.md
+      - ../sentinel/context/coolify.md
+      - ../sentinel/context/docker.md
+      - ../sentinel/context/openclaw.md
+      - ../sentinel/context/servicos.md
+      - ../flare/IDENTITY.md
+      - ../flare/USER.md
+    done: false
+
+  - id: empresa_dominio
+    question: "Qual o dominio principal da empresa? (ex: suaempresa.com.br)"
+    target: "{{DOMAIN}}"
+    answer: null
+    files_to_update:
+      - CONTEXT.md
+      - ../sentinel/TOOLS.md
+      - ../sentinel/context/servicos.md
+    done: false
+
+  - id: empresa_dominio_interno
+    question: "Tem dominio interno? (ex: suaempresa.local — se nao tiver, pode pular)"
+    target: "{{INTERNAL_DOMAIN}}"
+    answer: null
+    files_to_update:
+      - ../sentinel/TOOLS.md
+    done: false
+
+  # --- Decisor e equipe ---
+  - id: decisor_nome
+    question: "Quem e o decisor principal da empresa? (nome completo)"
+    target: "{{DECISION_MAKER}}"
+    answer: null
+    files_to_update:
+      - USER.md
+      - AGENTS.md
+      - IDENTITY.md
+      - SOUL.md
+      - COLLABORATION.md
+      - ../sentinel/USER.md
+      - ../flare/USER.md
+    done: false
+
+  - id: decisor_chat_id
+    question: "Qual o ID do decisor no canal de chat? (ex: Slack ID, Discord ID, etc.)"
+    target: "{{DECISION_MAKER_SLACK_ID}}"
+    answer: null
+    files_to_update:
+      - USER.md
+      - AGENTS.md
+    done: false
+
+  - id: equipe
+    question: "Quem mais faz parte da equipe? (nome + ID no chat para cada pessoa, ou 'so eu' se for apenas voce)"
+    target: dynamic
+    answer: null
+    files_to_update:
+      - USER.md
+      - ../sentinel/USER.md
+      - ../flare/USER.md
+    done: false
+
+  # --- Canal de comunicacao ---
+  - id: canal_chat
+    question: "Qual canal de chat a empresa usa? (Slack, Discord, WhatsApp, Telegram, outro)"
+    target: dynamic
+    answer: null
+    action: |
+      Se resposta for "Slack":
+        - Manter base como esta (ja tem refs Slack)
+        - Perguntar bot tokens e app tokens para cada agente
+        - Atualizar openclaw.json com accounts e bindings
+      Se resposta for outro canal:
+        - Remover TODAS as referencias a Slack de TODOS os arquivos de TODOS os agentes:
+          TOOLS.md, CONTEXT.md, AGENTS.md, IDENTITY.md, COLLABORATION.md, SOUL.md, HELP.md
+        - Substituir por referencias ao canal selecionado
+        - Atualizar openclaw.json com bindings do canal correto
+        - Atualizar formato de platform formatting nos agentes
+    files_to_update:
+      - IDENTITY.md
+      - CONTEXT.md
+      - AGENTS.md
+      - TOOLS.md
+      - COLLABORATION.md
+      - HELP.md
+      - ../sentinel/IDENTITY.md
+      - ../sentinel/TOOLS.md
+      - ../sentinel/AGENTS.md
+      - ../sentinel/HELP.md
+      - ../flare/IDENTITY.md
+      - ../flare/TOOLS.md
+      - ../flare/AGENTS.md
+      - ../flare/HELP.md
+    done: false
+
+  - id: canal_tokens
+    question: "Voce ja tem os tokens do bot criados para cada agente? (sim/nao — se nao, eu te ajudo a criar)"
+    target: dynamic
+    answer: null
+    action: |
+      Se nao:
+        - Fornecer template de manifest YAML para criar os apps
+        - Instruir o usuario a criar os apps
+        - Coletar os tokens gerados
+      Se sim:
+        - Coletar bot token e app token de cada agente
+      Em ambos os casos:
+        - Atualizar openclaw.json com as accounts
+    files_to_update: []
+    done: false
+
+  # --- Task manager ---
+  - id: task_manager
+    question: "Qual ferramenta de gestao de tarefas a empresa usa? (Plane, ClickUp, Trello, Linear, Jira, GitHub Projects, outro, nenhum)"
+    target: dynamic
+    answer: null
+    action: |
+      Se "Plane":
+        - Verificar se extensions-plane/ existe
+        - Pedir: URL da API, workspace slug, credenciais PostgreSQL
+        - Criar API keys no Plane para cada agente
+        - Atualizar openclaw.json com plugin Plane
+        - Criar estados customizados no projeto principal
+        - Atualizar TOOLS.md de todos os agentes com identidade e docs Plane
+      Se "ClickUp":
+        - Pesquisar MCP server do ClickUp (web_search)
+        - Instruir o usuario a instalar
+        - Configurar CLICKUP_API_TOKEN no .env
+        - Atualizar openclaw.json para usar MCP tools
+        - Remover TODAS as refs a Plane de TODOS os agentes
+        - Atualizar TOOLS.md de todos com docs ClickUp via MCP
+        - Atualizar CONTEXT.md de todos: "Task Manager: ClickUp"
+      Se "Trello":
+        - Mesma logica do ClickUp com MCP do Trello
+      Se "Linear", "Jira", "GitHub Projects", outro:
+        - Pesquisar se existe MCP server (web_search)
+        - Se sim: instalar e configurar
+        - Se nao: documentar que precisa integracao manual
+        - Remover refs Plane, atualizar todos os agentes
+      Se "nenhum":
+        - Remover TODAS as secoes de task manager de TODOS os agentes
+    files_to_update:
+      - TOOLS.md
+      - CONTEXT.md
+      - ../sentinel/TOOLS.md
+      - ../sentinel/CONTEXT.md
+      - ../flare/TOOLS.md
+    done: false
+
+  - id: task_manager_config
+    question: dynamic
+    target: dynamic
+    answer: null
+    action: "Perguntas de follow-up dependendo da escolha anterior (API keys, workspace, etc.)"
+    files_to_update: []
+    done: false
+
+  # --- Stack tecnologica ---
+  - id: hosting
+    question: "Qual provedor de hosting voces usam? (Coolify, Vercel, Railway, Docker direto, outro)"
+    target: "{{HOSTING_PLATFORM}}"
+    answer: null
+    files_to_update:
+      - CONTEXT.md
+      - ../sentinel/context/coolify.md
+      - ../sentinel/context/arquitetura.md
+    done: false
+
+  - id: modelo_primario
+    question: "Qual modelo de IA primario? (ex: claude-opus-4-6, claude-sonnet-4-6)"
+    target: "{{PRIMARY_MODEL}}"
+    answer: null
+    files_to_update:
+      - CONTEXT.md
+    done: false
+
+  - id: modelo_fallback
+    question: "Tem modelo fallback? (ex: claude-sonnet-4-6, ollama/qwen, nenhum)"
+    target: "{{DEFAULT_MODEL}}"
+    answer: null
+    files_to_update:
+      - CONTEXT.md
+    done: false
+
+  # --- Monitoramento ---
+  - id: monitoramento
+    question: "Voces usam Dozzle e/ou Uptime Kuma para monitoramento? (sim ambos, so Dozzle, so Kuma, nao, outra ferramenta)"
+    target: dynamic
+    answer: null
+    action: |
+      Se "sim ambos" ou "so Kuma":
+        - Pedir: container name do Kuma, API key (base64)
+        - Atualizar sentinel/TOOLS.md e sentinel/tasks/
+      Se "sim ambos" ou "so Dozzle":
+        - Pedir: container name do Dozzle, credenciais
+        - Atualizar sentinel/TOOLS.md e sentinel/tasks/
+      Se "nao" ou outra ferramenta:
+        - Remover secoes Dozzle/Kuma do Sentinel
+        - Adaptar para ferramenta do cliente ou monitoramento basico
+      Sempre pedir:
+        - Lista de servicos a monitorar (nome + URL)
+    files_to_update:
+      - ../sentinel/TOOLS.md
+      - ../sentinel/context/servicos.md
+      - ../sentinel/tasks/checar-status.md
+      - ../sentinel/tasks/monitorar-uptime.md
+      - ../sentinel/tasks/verificar-logs.md
+      - ../sentinel/scripts/healthcheck.sh
+      - ../sentinel/scripts/coleta-metricas.sh
+    done: false
+
+  - id: monitoramento_config
+    question: dynamic
+    target: dynamic
+    answer: null
+    action: "Perguntas de follow-up sobre containers, credenciais, servicos"
+    files_to_update: []
+    done: false
+
+  # --- Auth ---
+  - id: auth_anthropic
+    question: "Voce ja tem API key do Anthropic configurada no OpenClaw? (sim/nao)"
+    target: dynamic
+    answer: null
+    action: |
+      Se nao:
+        - Instruir a criar em console.anthropic.com
+        - Pedir a key e configurar no .env e auth-profiles.json
+      Se sim:
+        - Confirmar que esta funcionando
+    files_to_update: []
+    done: false
+
+  - id: auth_extras
+    question: "Tem outras API keys? (Gemini para web search, OpenRouter para fallback, ElevenLabs para voz — todas opcionais)"
+    target: dynamic
+    answer: null
+    action: "Configurar no .env conforme informado"
+    files_to_update: []
+    done: false
+
+  # --- Flare specifics ---
+  - id: flare_publico
+    question: "Qual o publico-alvo principal da empresa? (ex: donos de PMEs, devs, etc.)"
+    target: dynamic
+    answer: null
+    files_to_update:
+      - ../flare/SOUL.md
+      - ../flare/MEMORY.md
+    done: false
+
+  - id: flare_canais
+    question: "Quais canais de marketing voces usam? (Instagram, LinkedIn, YouTube, TikTok, email, etc.)"
+    target: dynamic
+    answer: null
+    files_to_update:
+      - ../flare/TOOLS.md
+      - ../flare/MEMORY.md
+    done: false
+
+  - id: flare_tom
+    question: "O tom de marketing deve ser mais formal ou informal? (ou deixa o Flare decidir)"
+    target: dynamic
+    answer: null
+    files_to_update:
+      - ../flare/SOUL.md
+      - ../flare/IDENTITY.md
+    done: false
+
+  # --- Validacao ---
+  - id: validacao
+    question: null
+    target: null
+    answer: null
+    action: |
+      Executar checklist automaticamente:
+      - [ ] Forge responde no canal de chat
+      - [ ] Sentinel consegue consultar monitoramento (se configurado)
+      - [ ] Flare responde no canal de chat
+      - [ ] Task manager conectado (criar issue teste + deletar)
+      - [ ] Modelos de IA respondendo
+      - [ ] Comunicacao inter-agente funciona (sessions_send)
+      Reportar resultado ao usuario.
+    files_to_update: []
+    done: false
+
+  # --- Limpeza ---
+  - id: limpeza
+    question: "Setup completo! Posso deletar os arquivos de onboarding?"
+    target: null
+    answer: null
+    action: |
+      Se sim:
+        - Deletar ONBOARDING.yaml deste workspace
+        - Deletar ONBOARDING.yaml do Sentinel (se existir)
+        - Deletar ONBOARDING.yaml do Flare (se existir)
+        - Registrar na memoria: "Onboarding concluido em DD/MM/YYYY"
+        - Informar: "Seus agentes estao prontos."
+    files_to_update: []
+    done: false

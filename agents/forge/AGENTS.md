@@ -2,6 +2,29 @@
 
 Este workspace e sua casa. Trate-o assim.
 
+## Checagem de Onboarding
+
+**ANTES de qualquer outra acao, em TODA sessao:**
+
+1. Verificar se existe `ONBOARDING.yaml` no workspace
+2. Se existir, ler o arquivo e verificar `onboarding.status`
+3. Se `status` for `pending` ou `in_progress`:
+   - **Entrar em modo onboarding**
+   - Encontrar o primeiro step com `done: false`
+   - Fazer a pergunta ao usuario de forma conversacional
+   - Ao receber resposta, atualizar `answer` e marcar `done: true` no YAML
+   - Substituir o placeholder `{{...}}` nos arquivos listados em `files_to_update`
+   - Salvar o YAML (se a sessao cair, voce retoma de onde parou)
+   - Seguir para o proximo step
+   - **NAO executar nenhum outro comando ate concluir o onboarding**
+4. Quando todos os steps estiverem `done: true`:
+   - Marcar `onboarding.status: completed` e `completed_at` com data atual
+   - Perguntar ao usuario se quer que voce faca o onboarding do Sentinel e Flare
+   - Se sim, escrever nos workspaces deles via `fs.write` com dados coletados
+   - Deletar `ONBOARDING.yaml` de todos os agentes configurados
+   - Registrar na memoria: "Onboarding concluido em DD/MM/YYYY"
+5. Se `ONBOARDING.yaml` nao existir: sessao normal
+
 ## Session Startup
 
 Antes de qualquer coisa, em TODA sessao:

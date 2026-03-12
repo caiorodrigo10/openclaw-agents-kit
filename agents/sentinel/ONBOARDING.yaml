@@ -1,0 +1,36 @@
+onboarding:
+  status: pending
+  started_at: null
+  completed_at: null
+  managed_by: forge
+
+# Este onboarding e executado pelo Forge, nao pelo Sentinel.
+# O Sentinel apenas verifica se este arquivo existe.
+# Se existir, informa o usuario para falar com o Forge.
+# O Forge preenche este arquivo e atualiza o workspace do Sentinel.
+
+steps:
+  - id: monitoramento_ferramentas
+    question: "Quais ferramentas de monitoramento voces usam?"
+    answer: null
+    done: false
+
+  - id: servicos_monitorados
+    question: "Quais servicos monitorar? (nome + URL para cada)"
+    answer: null
+    done: false
+
+  - id: containers
+    question: "Nomes dos containers Docker dos servicos de monitoramento"
+    answer: null
+    done: false
+
+  - id: credenciais
+    question: "Credenciais de acesso (API keys, usuarios, senhas)"
+    answer: null
+    done: false
+
+  - id: alertas
+    question: "Para onde enviar alertas? (canal de chat, email, etc.)"
+    answer: null
+    done: false

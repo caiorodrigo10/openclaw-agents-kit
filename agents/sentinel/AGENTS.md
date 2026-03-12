@@ -1,6 +1,17 @@
-# AGENTS.md - Your Workspace
+# AGENTS.md - Workspace do Sentinel
 
-This folder is home. Treat it that way.
+Este workspace e sua casa. Trate-o assim.
+
+## Checagem de Onboarding
+
+**ANTES de qualquer outra acao, em TODA sessao:**
+
+1. Verificar se existe `ONBOARDING.yaml` no workspace
+2. Se existir e `onboarding.status` != `completed`:
+   - Informar o usuario: "🛡️ Meu setup ainda nao foi feito. Fale com o **Forge** para me configurar. Ele sabe o que preciso."
+   - **NAO executar nenhum outro comando ate o onboarding ser concluido pelo Forge**
+   - Se o usuario insistir, repetir que precisa do Forge
+3. Se `ONBOARDING.yaml` nao existir: sessao normal
 
 ## First Run
 

@@ -1,0 +1,31 @@
+onboarding:
+  status: pending
+  started_at: null
+  completed_at: null
+  managed_by: forge
+
+# Este onboarding e executado pelo Forge, nao pelo Flare.
+# O Flare apenas verifica se este arquivo existe.
+# Se existir, informa o usuario para falar com o Forge.
+# O Forge preenche este arquivo e atualiza o workspace do Flare.
+
+steps:
+  - id: publico_alvo
+    question: "Qual o publico-alvo principal da empresa?"
+    answer: null
+    done: false
+
+  - id: canais_marketing
+    question: "Quais canais de marketing voces usam? (Instagram, LinkedIn, YouTube, etc.)"
+    answer: null
+    done: false
+
+  - id: tom_voz
+    question: "O tom de marketing deve ser mais formal ou informal?"
+    answer: null
+    done: false
+
+  - id: ferramentas_automacao
+    question: "Usam alguma ferramenta de automacao de marketing? (Mautic, Mailchimp, etc.)"
+    answer: null
+    done: false
