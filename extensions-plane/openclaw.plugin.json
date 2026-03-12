@@ -1,0 +1,35 @@
+{
+  "id": "plane",
+  "name": "Plane Integration",
+  "description": "Tools para interagir com o Plane (project management)",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "baseUrl": { "type": "string" },
+      "db": {
+        "type": "object",
+        "properties": {
+          "host": { "type": "string" },
+          "port": { "type": "number" },
+          "user": { "type": "string" },
+          "password": { "type": "string" },
+          "database": { "type": "string" }
+        },
+        "required": ["host", "port", "user", "password", "database"]
+      },
+      "agents": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "apiKey": { "type": "string" },
+            "workspace": { "type": "string" }
+          },
+          "required": ["apiKey", "workspace"]
+        }
+      }
+    },
+    "required": ["baseUrl", "db", "agents"]
+  }
+}

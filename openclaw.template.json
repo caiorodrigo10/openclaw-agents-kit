@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "name": "{{CLIENT_NAME}}",
+    "version": "1.0.0",
+    "description": "Configuracao OpenClaw Agents Kit para {{CLIENT_NAME}}",
+    "environment": "production"
+  },
+  "auth": {
+    "token": "{{OPENCLAW_AUTH_TOKEN}}"
+  },
+  "models": {
+    "default": {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-20250514",
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "max_tokens": 8192
+    },
+    "fallback": {
+      "provider": "ollama",
+      "model": "llama3:latest",
+      "base_url": "http://localhost:11434",
+      "max_tokens": 4096
+    }
+  },
+  "agents": [
+    {
+      "id": "forge",
+      "name": "Forge",
+      "role": "rd",
+      "description": "Agente de desenvolvimento e engenharia de software",
+      "model": "default",
+      "system_prompt_file": "agents/forge/system.md",
+      "memory_dir": "agents/forge/memory",
+      "tools": [
+        "shell",
+        "file_read",
+        "file_write",
+        "git",
+        "web_search",
+        "browser"
+      ]
+    },
+    {
+      "id": "sentinel",
+      "name": "Sentinel",
+      "role": "infra",
+      "description": "Agente de infraestrutura, monitoramento e DevOps",
+      "model": "default",
+      "system_prompt_file": "agents/sentinel/system.md",
+      "memory_dir": "agents/sentinel/memory",
+      "tools": [
+        "shell",
+        "docker",
+        "file_read",
+        "file_write",
+        "web_search",
+        "uptime_kuma"
+      ]
+    },
+    {
+      "id": "flare",
+      "name": "Flare",
+      "role": "head-marketing",
+      "description": "Agente de marketing, conteudo e comunicacao",
+      "model": "default",
+      "system_prompt_file": "agents/flare/system.md",
+      "memory_dir": "agents/flare/memory",
+      "tools": [
+        "web_search",
+        "browser",
+        "file_read",
+        "file_write",
+        "audio"
+      ]
+    }
+  ],
+  "channels": {
+    "slack": {
+      "accounts": [
+        {
+          "id": "forge_slack",
+          "bot_token": "{{SLACK_BOT_TOKEN_FORGE}}",
+          "app_token": "{{SLACK_APP_TOKEN_FORGE}}",
+          "signing_secret": "{{SLACK_SIGNING_SECRET_FORGE}}"
+        },
+        {
+          "id": "sentinel_slack",
+          "bot_token": "{{SLACK_BOT_TOKEN_SENTINEL}}",
+          "app_token": "{{SLACK_APP_TOKEN_SENTINEL}}",
+          "signing_secret": "{{SLACK_SIGNING_SECRET_SENTINEL}}"
+        },
+        {
+          "id": "flare_slack",
+          "bot_token": "{{SLACK_BOT_TOKEN_FLARE}}",
+          "app_token": "{{SLACK_APP_TOKEN_FLARE}}",
+          "signing_secret": "{{SLACK_SIGNING_SECRET_FLARE}}"
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "agent": "forge",
+      "channel": "slack",
+      "account": "forge_slack"
+    },
+    {
+      "agent": "sentinel",
+      "channel": "slack",
+      "account": "sentinel_slack"
+    },
+    {
+      "agent": "flare",
+      "channel": "slack",
+      "account": "flare_slack"
+    }
+  ],
+  "tools": {
+    "web_search": {
+      "provider": "gemini",
+      "api_key_env": "GEMINI_API_KEY"
+    },
+    "audio": {
+      "provider": "elevenlabs",
+      "api_key_env": "ELEVENLABS_API_KEY",
+      "default_voice": "{{ELEVENLABS_VOICE_ID}}"
+    },
+    "browser": {
+      "headless": true,
+      "timeout": 30000,
+      "proxy": "{{BROWSER_PROXY_URL}}"
+    }
+  },
+  "plugins": {
+    "plane": {
+      "enabled": true,
+      "api_url": "{{PLANE_API_URL}}",
+      "api_token": "{{PLANE_API_TOKEN}}",
+      "workspace_slug": "{{PLANE_WORKSPACE_SLUG}}",
+      "default_project": "{{PLANE_DEFAULT_PROJECT_ID}}",
+      "db": {
+        "host": "{{PLANE_DB_HOST}}",
+        "port": 5432,
+        "user": "{{PLANE_DB_USER}}",
+        "password": "{{PLANE_DB_PASSWORD}}",
+        "name": "{{PLANE_DB_NAME}}"
+      }
+    }
+  },
+  "gateway": {
+    "token": "{{GATEWAY_API_TOKEN}}",
+    "port": 3000
+  }
+}

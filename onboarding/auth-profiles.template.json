@@ -1,0 +1,10 @@
+{
+  "profiles": [
+    {
+      "id": "anthropic:manual",
+      "provider": "anthropic",
+      "type": "manual",
+      "token": "{{ANTHROPIC_API_KEY}}"
+    }
+  ]
+}

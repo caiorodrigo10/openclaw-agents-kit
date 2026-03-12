@@ -1,0 +1,12 @@
+{
+  "name": "plane",
+  "version": "1.0.0",
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "dependencies": {
+    "pg": "^8.20.0"
+  }
+}
