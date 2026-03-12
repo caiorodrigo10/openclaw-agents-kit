@@ -1,0 +1,51 @@
+onboarding:
+  status: pending
+  started_at: null
+  completed_at: null
+  managed_by: forge
+
+# Este onboarding e executado pelo Forge, nao pelo Pulse.
+# O Pulse apenas verifica se este arquivo existe.
+# Se existir, informa o usuario para falar com o Forge.
+# O Forge preenche este arquivo e atualiza o workspace do Pulse.
+
+steps:
+  - id: areas_negocio
+    question: "Quais sao as areas de negocio da empresa? (ex: Marketing, Consultoria, Produto)"
+    answer: null
+    done: false
+
+  - id: projetos
+    question: "Quais projetos existem no task manager? (nome + area para cada)"
+    answer: null
+    done: false
+
+  - id: equipe_membros
+    question: "Quem faz parte da equipe? (nome + ID no chat + papel para cada)"
+    answer: null
+    done: false
+
+  - id: ciclo_sprint
+    question: "Qual o ciclo do sprint? (semanal, quinzenal, mensal)"
+    answer: null
+    done: false
+
+  - id: horario_standup
+    question: "Que horario deve ser o daily standup? (padrao: 9h BRT)"
+    answer: null
+    done: false
+
+  - id: horario_cobranca
+    question: "Que horario deve ser a cobranca automatica? (padrao: 11h BRT)"
+    answer: null
+    done: false
+
+  - id: dia_relatorio
+    question: "Que dia e horario para o relatorio semanal? (padrao: sexta 17h BRT)"
+    answer: null
+    done: false
+
+  - id: regras_backlog
+    question: "Tem regras especificas de backlog? (quem pode mover, o que precisa aprovacao)"
+    answer: null
+    done: false

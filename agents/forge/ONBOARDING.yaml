@@ -285,6 +285,41 @@ steps:
       - ../flare/IDENTITY.md
     done: false
 
+  # --- Pulse specifics ---
+  - id: pulse_areas
+    question: "Quais areas de negocio o Pulse deve acompanhar? (ex: Marketing, Consultoria, Produto — pode ser as mesmas ja informadas)"
+    target: dynamic
+    answer: null
+    files_to_update:
+      - ../pulse/CONTEXT.md
+      - ../pulse/plano/ROTINA-SEMANAL.md
+    done: false
+
+  - id: pulse_ciclo
+    question: "Qual o ciclo do sprint? (semanal, quinzenal, mensal — padrao: semanal)"
+    target: dynamic
+    answer: null
+    files_to_update:
+      - ../pulse/CONTEXT.md
+      - ../pulse/workflows/ciclo-semanal.md
+    done: false
+
+  - id: pulse_horarios
+    question: "Horarios do Pulse — standup (padrao 9h), cobranca (padrao 11h), relatorio semanal (padrao sexta 17h). Quer manter ou ajustar?"
+    target: dynamic
+    answer: null
+    action: |
+      Configurar crons do Pulse conforme horarios informados:
+      - Daily standup (seg-sex)
+      - Cobranca automatica (seg-sex)
+      - Relatorio semanal (sexta)
+    files_to_update:
+      - ../pulse/tasks/daily-standup.md
+      - ../pulse/tasks/cobranca-automatica.md
+      - ../pulse/tasks/relatorio-semanal.md
+      - ../pulse/workflows/ciclo-semanal.md
+    done: false
+
   # --- Validacao ---
   - id: validacao
     question: null
@@ -297,6 +332,7 @@ steps:
       - [ ] Flare responde no canal de chat
       - [ ] Task manager conectado (criar issue teste + deletar)
       - [ ] Modelos de IA respondendo
+      - [ ] Pulse envia daily standup (se configurado)
       - [ ] Comunicacao inter-agente funciona (sessions_send)
       Reportar resultado ao usuario.
     files_to_update: []
@@ -312,6 +348,7 @@ steps:
         - Deletar ONBOARDING.yaml deste workspace
         - Deletar ONBOARDING.yaml do Sentinel (se existir)
         - Deletar ONBOARDING.yaml do Flare (se existir)
+        - Deletar ONBOARDING.yaml do Pulse (se existir)
         - Registrar na memoria: "Onboarding concluido em DD/MM/YYYY"
         - Informar: "Seus agentes estao prontos."
     files_to_update: []
